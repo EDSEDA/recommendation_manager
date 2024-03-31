@@ -1,10 +1,18 @@
 from config import settings
 from grifon.video_analysis.schema import VideoAnalyseMessage
+from grifon.recommendation.schema import CreateUserRecommendationMessage
 from db.utils import session
 from db.models import User
 import logging
+from main import kafka_client  # Импорт экземпляра KafkaClient
 
 
+async def _get_recommendations(message: CreateUserRecommendationMessage):
+    kafka_client.send_message(settings.RECOMMENDATION_TOPIC, message)
+    kafka_client.flush()
+
+
+@kafka_client.register_topic_handler(settings.VIDEO_ANALYSIS_TOPIC)
 async def get_recommendations(msg: VideoAnalyseMessage):
     """
     1. Получение внутреннего ID пользователя по эмбедингу
@@ -15,5 +23,5 @@ async def get_recommendations(msg: VideoAnalyseMessage):
     target_embedding = msg.embedding
     user_id = session.query(User.id).filter(User.embedding == target_embedding).all()
 
-
-    print(f"Received message: {msg.value().decode('utf-8')} from topic {msg.topic()}")
+    await _get_recommendations(msg)     # todo: upd message
+    logging.info("Sent task to recommendation service")
