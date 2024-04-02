@@ -4,7 +4,7 @@ from grifon.recommendation.schema import CreateUserRecommendationMessage
 from db.utils import session
 from db.models import User
 import logging
-from main import kafka_client  # Импорт экземпляра KafkaClient
+from tasks import kafka_client  # Импорт экземпляра KafkaClient
 
 
 async def _get_recommendations(message: CreateUserRecommendationMessage):

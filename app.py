@@ -1,11 +1,11 @@
 import asyncio
 
 import tasks.video_analyse  # noqa
-from main import main
+from tasks import start_handling
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(start_handling())
 
 
 
