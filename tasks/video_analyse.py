@@ -5,6 +5,7 @@ from db.utils import session
 from db.models import User
 import logging
 from tasks import kafka_client  # Импорт экземпляра KafkaClient
+import json
 
 
 async def _get_recommendations(message: CreateUserRecommendationMessage):
@@ -20,6 +21,7 @@ async def get_recommendations(msg: VideoAnalyseMessage):
     """
     logging.info("Start recommendation processing...")
 
+    msg = VideoAnalyseMessage.parse_obj(json.loads(msg.value()))
     target_embedding = msg.embedding
     user_id = session.query(User.id).filter(User.embedding == target_embedding).all()
 
