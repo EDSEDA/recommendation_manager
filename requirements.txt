@@ -1,5 +1,5 @@
-git+ssh://git@github.com/EDSEDA/api.git
+#git+ssh://git@github.com/EDSEDA/api.git
 
-SQLAlchemy~=2.0.29
-alembic~=1.13.1
-psycopg[binary,c]==3.1.12
+#SQLAlchemy~=2.0.29
+#alembic~=1.13.1
+#psycopg[binary,c]==3.1.12
